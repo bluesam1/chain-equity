@@ -5,6 +5,7 @@ import {
 import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 import { expect } from "chai";
 import hre from "hardhat";
+import type { Lock } from "../typechain-types/Lock";
 
 describe("Lock", function () {
   // We define a fixture to reuse the same setup in every test.
@@ -20,8 +21,10 @@ describe("Lock", function () {
     // Contracts are deployed using the first signer/account by default
     const [owner, otherAccount] = await hre.ethers.getSigners();
 
-    const Lock = await hre.ethers.getContractFactory("Lock");
-    const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+    const LockFactory = await hre.ethers.getContractFactory("Lock");
+    const lock = (await LockFactory.deploy(unlockTime, {
+      value: lockedAmount,
+    })) as unknown as Lock;
 
     return { lock, unlockTime, lockedAmount, owner, otherAccount };
   }

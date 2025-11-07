@@ -2,11 +2,13 @@
  * Backend entry point
  */
 
-import { generateCapTable } from './cap-table.js';
+import { generateCapTable, exportCapTableToCSV, exportCapTableToJSON } from './cap-table.js';
+import type { CapTable, CapTableHolder } from './cap-table.js';
 import { IssuerService } from './issuer.js';
 
 // Export services
-export { generateCapTable, IssuerService };
+export { generateCapTable, exportCapTableToCSV, exportCapTableToJSON, IssuerService };
+export type { CapTable, CapTableHolder };
 
 // Example usage (for testing)
 if (import.meta.url === `file://${process.argv[1]}`) {
