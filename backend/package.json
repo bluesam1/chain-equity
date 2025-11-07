@@ -1,0 +1,19 @@
+{
+  "name": "@chain-equity/backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc --watch"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.80.0",
+    "ethers": "^6.15.0"
+  }
+}

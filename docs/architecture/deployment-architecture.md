@@ -1,0 +1,47 @@
+# Deployment Architecture
+
+### Deployment Strategy
+
+**Frontend Deployment:**
+- **Platform:** Firebase Hosting
+- **Build Command:** `npm run build` (Vite build)
+- **Output Directory:** `frontend/dist`
+- **CDN/Edge:** Firebase Hosting global CDN
+
+**Backend Deployment:**
+- **Platform:** Local Node.js / Firebase Functions (stretch goal)
+- **Build Command:** `npm run build` (TypeScript compilation)
+- **Deployment Method:** Local execution / Firebase Functions (stretch goal)
+
+**Smart Contract Deployment:**
+- **Platform:** Hardhat Network (local) / Sepolia Testnet (stretch goal)
+- **Deployment Script:** `scripts/deploy.ts` (TypeScript)
+- **Verification:** Etherscan verification for Sepolia (stretch goal)
+
+### Environments
+
+| Environment | Frontend URL | Backend URL | Blockchain | Purpose |
+|-------------|--------------|-------------|------------|---------|
+| Development | `http://localhost:5173` (Vite dev server) | Local | `http://localhost:8545` | Local development |
+| Staging | Firebase Hosting URL | Local / Firebase Functions | Sepolia Testnet | Pre-production testing |
+| Production | Firebase Hosting URL | Local / Firebase Functions | Sepolia Testnet | Public demo |
+
+### CI/CD Pipeline
+
+```yaml
+# .github/workflows/ci.yml (stretch goal)
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+      - run: npm install
+      - run: npm test
+      - run: npm run build
+```
+
+---
+

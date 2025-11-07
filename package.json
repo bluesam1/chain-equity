@@ -1,0 +1,25 @@
+{
+  "name": "chain-equity",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "contracts",
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "install:all": "npm install",
+    "test:all": "npm run test --workspaces --if-present",
+    "build:all": "npm run build --workspaces --if-present",
+    "clean:all": "npm run clean --workspaces --if-present",
+    "deploy": "npm run build --workspace=frontend && firebase deploy"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
+
