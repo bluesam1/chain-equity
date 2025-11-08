@@ -31,4 +31,3 @@ CREATE TABLE public.user_profiles (
 ```
 
 ---
-

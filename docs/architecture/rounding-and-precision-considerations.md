@@ -49,4 +49,3 @@ const percentageStr = ethers.utils.formatUnits(percentageScaled, 6); // "12.3456
 ```
 
 ---
-

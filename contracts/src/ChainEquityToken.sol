@@ -82,30 +82,46 @@ contract ChainEquityToken is ERC20, AccessControl {
     }
 
     /**
-     * @dev Overrides transfer to check allowlist restrictions
+     * @dev Overrides transfer to check allowlist restrictions and convert displayed amount to base amount
      * @param to The recipient address
-     * @param value The amount to transfer
+     * @param value The displayed amount to transfer (will be converted to base amount internally)
      * @return bool Success status
      * @notice Both sender and recipient must be on allowlist
+     * @notice The value parameter is the displayed amount (what user sees in MetaMask)
+     * @notice The contract converts it to base amount internally: baseAmount = displayedAmount / multiplier
      */
     function transfer(address to, uint256 value) public override returns (bool) {
         require(allowlist[msg.sender], "Sender not allowlisted");
         require(allowlist[to], "Recipient not allowlisted");
-        return super.transfer(to, value);
+        
+        // Convert displayed amount to base amount
+        // User enters displayed amount (what they see in MetaMask), we convert to base
+        uint256 baseAmount = value / _multiplier;
+        require(baseAmount > 0, "Amount too small after accounting for multiplier");
+        
+        return super.transfer(to, baseAmount);
     }
 
     /**
-     * @dev Overrides transferFrom to check allowlist restrictions
+     * @dev Overrides transferFrom to check allowlist restrictions and convert displayed amount to base amount
      * @param from The sender address
      * @param to The recipient address
-     * @param value The amount to transfer
+     * @param value The displayed amount to transfer (will be converted to base amount internally)
      * @return bool Success status
      * @notice Both sender and recipient must be on allowlist
+     * @notice The value parameter is the displayed amount (what user sees in MetaMask)
+     * @notice The contract converts it to base amount internally: baseAmount = displayedAmount / multiplier
      */
     function transferFrom(address from, address to, uint256 value) public override returns (bool) {
         require(allowlist[from], "Sender not allowlisted");
         require(allowlist[to], "Recipient not allowlisted");
-        return super.transferFrom(from, to, value);
+        
+        // Convert displayed amount to base amount
+        // User enters displayed amount (what they see in MetaMask), we convert to base
+        uint256 baseAmount = value / _multiplier;
+        require(baseAmount > 0, "Amount too small after accounting for multiplier");
+        
+        return super.transferFrom(from, to, baseAmount);
     }
 
     /**
@@ -138,6 +154,15 @@ contract ChainEquityToken is ERC20, AccessControl {
      */
     function totalSupply() public view override returns (uint256) {
         return super.totalSupply() * _multiplier;
+    }
+
+    /**
+     * @dev Returns the current virtual split multiplier
+     * @return uint256 The current multiplier value
+     * @notice Returns 1 if no splits have been executed
+     */
+    function multiplier() public view returns (uint256) {
+        return _multiplier;
     }
 
     /**

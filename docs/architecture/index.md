@@ -10,7 +10,6 @@
   - [Data Models](#data-models)
   - [Smart Contract Architecture](#smart-contract-architecture)
   - [Frontend Architecture](#frontend-architecture)
-  - [Backend Architecture](#backend-architecture)
   - [External APIs](#external-apis)
   - [Core Workflows](#core-workflows)
   - [Database Schema](#database-schema)

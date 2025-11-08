@@ -3,6 +3,7 @@
  */
 
 import { createClient, type Session } from "@supabase/supabase-js";
+import { ethers } from "ethers";
 
 // Get Supabase credentials from environment variables
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -58,42 +59,42 @@ export async function signInWithWallet(
   message: string
 ) {
   try {
-    // Supabase Web3 authentication uses the verify endpoint
-    // We need to send the wallet address, signature, and message to Supabase
-    const response = await fetch(`${supabaseUrl}/auth/v1/verify`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        apikey: supabaseAnonKey,
+    // For local development, we'll use a simplified authentication
+    // that just verifies the signature and creates a local session
+    // Supabase Web3 auth requires a custom backend implementation
+
+    // Verify signature locally using ethers
+    const provider = new ethers.BrowserProvider(window.ethereum!);
+    const recoveredAddress = ethers.verifyMessage(message, signature);
+
+    if (recoveredAddress.toLowerCase() !== walletAddress.toLowerCase()) {
+      throw new Error("Signature verification failed");
+    }
+
+    // Create a simple session object for local development
+    // In production, this would be handled by Supabase with a custom backend
+    const session = {
+      access_token: `local_${walletAddress}_${Date.now()}`,
+      refresh_token: `local_refresh_${walletAddress}_${Date.now()}`,
+      user: {
+        id: walletAddress,
+        address: walletAddress,
       },
-      body: JSON.stringify({
-        type: "web3",
-        address: walletAddress.toLowerCase(),
-        signature: signature,
-        message: message,
-      }),
-    });
+    };
 
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(
-        errorData.error?.message ||
-          `Authentication failed: ${response.status} ${response.statusText}`
-      );
-    }
-
-    const data = await response.json();
-
-    // Set the session in the Supabase client
-    if (data.session) {
-      await supabase.auth.setSession({
-        access_token: data.session.access_token,
-        refresh_token: data.session.refresh_token,
-      });
-    }
+    // Store in localStorage for session persistence
+    localStorage.setItem(
+      "walletSession",
+      JSON.stringify({
+        address: walletAddress,
+        signature,
+        message,
+        timestamp: Date.now(),
+      })
+    );
 
     return {
-      data: data.session,
+      data: session,
       error: null,
     };
   } catch (error) {
@@ -110,6 +111,28 @@ export async function signInWithWallet(
  * @returns Current session or null
  */
 export async function getCurrentSession() {
+  // For local development, check localStorage first
+  const walletSession = localStorage.getItem("walletSession");
+  if (walletSession) {
+    try {
+      const sessionData = JSON.parse(walletSession);
+      // Check if session is still valid (24 hours)
+      if (Date.now() - sessionData.timestamp < 24 * 60 * 60 * 1000) {
+        return {
+          access_token: `local_${sessionData.address}_${sessionData.timestamp}`,
+          refresh_token: `local_refresh_${sessionData.address}_${sessionData.timestamp}`,
+          user: {
+            id: sessionData.address,
+            address: sessionData.address,
+          },
+        };
+      }
+    } catch (error) {
+      // Fall through to Supabase check
+    }
+  }
+
+  // Fallback to Supabase session check
   const {
     data: { session },
     error,
@@ -145,6 +168,10 @@ export async function getCurrentUser() {
  * Sign out current user
  */
 export async function signOut() {
+  // Clear local session
+  localStorage.removeItem("walletSession");
+
+  // Sign out from Supabase
   const { error } = await supabase.auth.signOut();
 
   if (error) {

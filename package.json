@@ -4,7 +4,6 @@
   "private": true,
   "workspaces": [
     "contracts",
-    "backend",
     "frontend"
   ],
   "scripts": {
@@ -12,7 +11,12 @@
     "test:all": "npm run test --workspaces --if-present",
     "build:all": "npm run build --workspaces --if-present",
     "clean:all": "npm run clean --workspaces --if-present",
-    "deploy": "npm run build --workspace=frontend && firebase deploy"
+    "deploy": "npm run build --workspace=frontend && firebase deploy",
+    "contracts:node": "npm run node --workspace=contracts",
+    "contracts:deploy": "npm run deploy:local --workspace=contracts",
+    "contracts:populate": "npm run populate:test --workspace=contracts",
+    "frontend:dev": "npm run dev --workspace=frontend",
+    "frontend:build": "npm run build --workspace=frontend"
   },
   "devDependencies": {
     "typescript": "^5.0.0"

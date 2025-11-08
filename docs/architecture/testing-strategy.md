@@ -64,4 +64,3 @@ describe('Cap-Table Service', () => {
 ```
 
 ---
-
