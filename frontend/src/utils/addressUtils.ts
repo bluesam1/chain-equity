@@ -25,3 +25,4 @@ export function normalizeAddress(address: string): string | null {
   // In the future, could implement EIP-55 checksum validation
   return address.toLowerCase();
 }
+

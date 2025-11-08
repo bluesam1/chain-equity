@@ -270,3 +270,4 @@ describe("CapTable with Block Lookup", () => {
     });
   });
 });
+

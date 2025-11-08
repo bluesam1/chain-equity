@@ -12,7 +12,7 @@ import { useTabNavigation } from "../contexts/TabNavigationContext";
 import { addTokenToMetaMask } from "../lib/contract";
 
 export const Balance: React.FC = () => {
-  const { balance, symbol, contractInfo, isLoading, error, refetch } =
+  const { balance, symbol, contractInfo, totalSupply, isLoading, error, refetch } =
     useBalance();
   const { address } = useWallet();
   const { navigateToTransactionHistory } = useTabNavigation();
@@ -51,6 +51,17 @@ export const Balance: React.FC = () => {
     if (address) {
       navigateToTransactionHistory(address);
     }
+  };
+
+  // Format number with commas for thousands
+  const formatNumberWithCommas = (value: string | null): string => {
+    if (!value) return "";
+    const num = parseFloat(value);
+    if (isNaN(num)) return value;
+    return num.toLocaleString("en-US", {
+      maximumFractionDigits: 18,
+      useGrouping: true,
+    });
   };
 
   return (
@@ -139,22 +150,16 @@ export const Balance: React.FC = () => {
                   {contractInfo.symbol}
                 </div>
               </div>
-              <div>
-                <label className="text-sm font-medium text-text-secondary">
-                  Decimals
-                </label>
-                <div className="mt-1 text-sm text-text-primary">
-                  {contractInfo.decimals}
+              {totalSupply && (
+                <div>
+                  <label className="text-sm font-medium text-text-secondary">
+                    Total Supply
+                  </label>
+                  <div className="mt-1 text-sm text-text-primary">
+                    {formatNumberWithCommas(totalSupply)} {contractInfo.symbol}
+                  </div>
                 </div>
-              </div>
-              <div>
-                <label className="text-sm font-medium text-text-secondary">
-                  Contract Address
-                </label>
-                <div className="mt-1 font-mono text-sm text-text-primary">
-                  {contractInfo.address}
-                </div>
-              </div>
+              )}
             </>
           )}
 

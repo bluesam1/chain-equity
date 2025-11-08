@@ -70,8 +70,15 @@ function AppContent() {
       {/* Navigation */}
       <nav className="bg-surface border-b border-border px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="text-xl font-bold text-text-primary">
-            Chain Equity
+          <div className="flex items-center gap-3">
+            <img 
+              src="/chain-equity-icon.svg" 
+              alt="Chain Equity" 
+              className="w-8 h-8 text-text-primary"
+            />
+            <div className="text-xl font-bold text-text-primary">
+              Chain Equity
+            </div>
           </div>
           <div className="flex items-center gap-4">
             {isAdmin && (

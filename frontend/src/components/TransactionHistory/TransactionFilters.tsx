@@ -23,3 +23,4 @@ export const TransactionFilters: React.FC<TransactionFiltersProps> = ({
     </div>
   );
 };
+

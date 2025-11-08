@@ -61,7 +61,12 @@ export const Transfer: React.FC = () => {
     ) {
       return "Recipient not on allowlist";
     }
-    if (validation.senderOnAllowlist === false) {
+    // Only show sender error if recipient is valid and on allowlist
+    if (
+      validation.recipientValid === true &&
+      validation.recipientOnAllowlist === true &&
+      validation.senderOnAllowlist === false
+    ) {
       return "You are not on the allowlist";
     }
     return null;
@@ -80,6 +85,15 @@ export const Transfer: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Allowlist Warning */}
+      {validation.senderOnAllowlist === false && (
+        <StatusIndicator
+          variant="error"
+          message="You are not on the allowlist and therefore cannot send tokens. Please contact an administrator to be added to the allowlist."
+          display="inline"
+        />
+      )}
+
       {/* Transfer Form */}
       <Card variant="standard">
         <h2 className="text-lg font-semibold text-text-primary mb-4">
@@ -110,7 +124,14 @@ export const Transfer: React.FC = () => {
             }
             errorMessage={getRecipientError() || undefined}
             showValidationIndicator={true}
-            touched={touched}
+            touched={
+              touched ||
+              (validation.recipientValid === true &&
+                validation.recipientOnAllowlist === false) ||
+              (validation.recipientValid === true &&
+                validation.recipientOnAllowlist === true &&
+                validation.senderOnAllowlist === false)
+            }
             disabled={status === "pending"}
           />
 

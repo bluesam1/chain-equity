@@ -6,6 +6,7 @@ import {
   getDecimals,
   formatBalance,
   getContractInfo,
+  getTotalSupply,
   type ContractInfo,
 } from "../lib/contract";
 
@@ -13,6 +14,7 @@ export interface BalanceState {
   balance: string | null;
   symbol: string | null;
   contractInfo: ContractInfo | null;
+  totalSupply: string | null;
   isLoading: boolean;
   error: string | null;
 }
@@ -27,6 +29,7 @@ export function useBalance() {
     balance: null,
     symbol: null,
     contractInfo: null,
+    totalSupply: null,
     isLoading: false,
     error: null,
   });
@@ -38,6 +41,7 @@ export function useBalance() {
         ...prev,
         balance: null,
         symbol: null,
+        totalSupply: null,
         isLoading: false,
       }));
       return;
@@ -49,19 +53,22 @@ export function useBalance() {
       // Convert viem public client to ethers provider
       const provider = new ethers.BrowserProvider(window.ethereum);
 
-      // Fetch contract info and balance in parallel
-      const [contractInfo, balance, decimals] = await Promise.all([
+      // Fetch contract info, balance, and total supply in parallel
+      const [contractInfo, balance, decimals, totalSupply] = await Promise.all([
         getContractInfo(provider),
         getBalance(address, provider),
         getDecimals(provider),
+        getTotalSupply(provider),
       ]);
 
       const formattedBalance = formatBalance(balance, decimals);
+      const formattedTotalSupply = formatBalance(totalSupply, decimals);
 
       setState({
         balance: formattedBalance,
         symbol: contractInfo.symbol,
         contractInfo,
+        totalSupply: formattedTotalSupply,
         isLoading: false,
         error: null,
       });

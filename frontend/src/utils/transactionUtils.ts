@@ -51,3 +51,4 @@ export function formatAmount(
   // Format with specified decimal places, but remove trailing zeros
   return num.toFixed(decimals).replace(/\.?0+$/, "");
 }
+
