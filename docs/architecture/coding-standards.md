@@ -24,4 +24,3 @@
 | Contract Functions | camelCase | camelCase | `approveWallet()` |
 
 ---
-

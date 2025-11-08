@@ -552,7 +552,6 @@ SUPABASE_URL=your-project-url
 SUPABASE_ANON_KEY=your-anon-key
 
 # Blockchain
-PRIVATE_KEY=your-wallet-private-key
 RPC_URL=http://localhost:8545  # For Hardhat local network
 # For Sepolia testnet (stretch goal):
 # RPC_URL=https://sepolia.infura.io/v3/YOUR_INFURA_KEY

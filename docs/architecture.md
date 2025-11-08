@@ -1168,7 +1168,6 @@ And add Tailwind directives to `src/styles/index.css`:
 ```bash
 SUPABASE_URL=your-supabase-url
 SUPABASE_ANON_KEY=your-supabase-anon-key
-PRIVATE_KEY=your-wallet-private-key
 RPC_URL=http://localhost:8545
 CONTRACT_ADDRESS=deployed-contract-address
 ```

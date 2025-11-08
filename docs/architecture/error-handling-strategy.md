@@ -68,4 +68,3 @@ function handleTransactionError(error: any): { error: string } {
 ```
 
 ---
-

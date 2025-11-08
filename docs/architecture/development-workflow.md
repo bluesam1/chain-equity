@@ -54,10 +54,6 @@ cd frontend && npm run build
 
 # Deploy to Firebase Hosting
 firebase deploy --only hosting
-
-# Generate cap-table (from backend directory, TypeScript)
-cd backend && npm run build
-node dist/cap-table.js
 ```
 
 ### Environment Configuration
@@ -96,18 +92,15 @@ export default defineConfig({
 
 **Note:** Tailwind CSS v4 uses a high-performance engine and modern CSS features. No `tailwind.config.js` or `postcss.config.js` files are needed when using the Vite plugin.
 
-**Backend (.env):**
+**Root (.env):**
 ```bash
 SUPABASE_URL=your-supabase-url
 SUPABASE_ANON_KEY=your-supabase-anon-key
-PRIVATE_KEY=your-wallet-private-key
 RPC_URL=http://localhost:8545
 CONTRACT_ADDRESS=deployed-contract-address
 ```
 
-**Shared:**
-- Contract address (same for frontend and backend)
-- RPC URL (same network for both)
+**Note:** The contract address and RPC URL should match between root `.env` and `frontend/.env.local` files.
 
 ---
 

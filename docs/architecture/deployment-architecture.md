@@ -8,11 +8,6 @@
 - **Output Directory:** `frontend/dist`
 - **CDN/Edge:** Firebase Hosting global CDN
 
-**Backend Deployment:**
-- **Platform:** Local Node.js / Firebase Functions (stretch goal)
-- **Build Command:** `npm run build` (TypeScript compilation)
-- **Deployment Method:** Local execution / Firebase Functions (stretch goal)
-
 **Smart Contract Deployment:**
 - **Platform:** Hardhat Network (local) / Sepolia Testnet (stretch goal)
 - **Deployment Script:** `scripts/deploy.ts` (TypeScript)
@@ -20,11 +15,11 @@
 
 ### Environments
 
-| Environment | Frontend URL | Backend URL | Blockchain | Purpose |
-|-------------|--------------|-------------|------------|---------|
-| Development | `http://localhost:5173` (Vite dev server) | Local | `http://localhost:8545` | Local development |
-| Staging | Firebase Hosting URL | Local / Firebase Functions | Sepolia Testnet | Pre-production testing |
-| Production | Firebase Hosting URL | Local / Firebase Functions | Sepolia Testnet | Public demo |
+| Environment | Frontend URL | Blockchain | Purpose |
+|-------------|--------------|------------|---------|
+| Development | `http://localhost:5173` (Vite dev server) | `http://localhost:8545` | Local development |
+| Staging | Firebase Hosting URL | Sepolia Testnet | Pre-production testing |
+| Production | Firebase Hosting URL | Sepolia Testnet | Public demo |
 
 ### CI/CD Pipeline
 
@@ -44,4 +39,4 @@ jobs:
 ```
 
 ---
-
+

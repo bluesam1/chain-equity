@@ -7,6 +7,10 @@
     "test": "hardhat test",
     "node": "hardhat node",
     "deploy": "hardhat run scripts/deploy.ts",
+    "deploy:local": "hardhat run scripts/deploy-and-update-env.ts --network localhost",
+    "deploy:update": "hardhat run scripts/deploy-and-update-env.ts --network localhost",
+    "grant:roles": "hardhat run scripts/grant-roles.ts --network localhost",
+    "populate:test": "hardhat run scripts/populate-test-data.ts --network localhost",
     "clean": "hardhat clean"
   },
   "devDependencies": {

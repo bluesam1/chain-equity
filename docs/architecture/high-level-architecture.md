@@ -50,11 +50,6 @@ chain-equity/                           # Monorepo root
 │   ├── test/
 │   │   └── ChainEquityToken.test.ts   # Contract test suite (TypeScript)
 │   └── hardhat.config.ts              # Hardhat configuration (TypeScript)
-├── backend/                           # Backend workspace
-│   ├── src/
-│   │   ├── cap-table.ts               # Cap-table generation (TypeScript)
-│   │   └── issuer.ts                  # Issuer service (TypeScript)
-│   └── package.json
 ├── frontend/                          # Frontend workspace (Vite.js)
 │   ├── src/
 │   │   ├── pages/                     # React pages/components
@@ -74,7 +69,7 @@ chain-equity/                           # Monorepo root
 **Rationale:**
 - **Monorepo:** Single repository simplifies development, deployment, and dependency management
 - **npm workspaces:** Sufficient for this project size, no additional tooling required
-- **TypeScript throughout:** Type safety across frontend, backend, and contract scripts
+- **TypeScript throughout:** Type safety across frontend and contract scripts
 - **Clear separation:** Each workspace has distinct purpose while sharing dependencies
 - **Vite.js:** Fast development server and optimized production builds
 - **Firebase Hosting:** Simple, reliable hosting with global CDN
@@ -93,11 +88,6 @@ graph TB
         WALLET[Wallet Connection]
     end
     
-    subgraph "Backend Services"
-        CAP[Cap-Table Service]
-        ISSUER[Issuer Service]
-    end
-    
     subgraph "External Services"
         SUPABASE[(Supabase<br/>User Auth & Sessions)]
         BLOCKCHAIN[Hardhat Network / Sepolia]
@@ -112,11 +102,8 @@ graph TB
     AUTH -->|Creates Session| SUPABASE
     UI -->|Queries Events| BLOCKCHAIN
     UI -->|Sends Transactions| BLOCKCHAIN
+    UI -->|Interacts with| TOKEN
     BLOCKCHAIN -->|Emits Events| TOKEN
-    CAP -->|Queries Events| BLOCKCHAIN
-    ISSUER -->|Interacts with| TOKEN
-    UI -->|Calls| CAP
-    UI -->|Calls| ISSUER
 ```
 
 ### Architectural Patterns
@@ -130,4 +117,4 @@ graph TB
 - **Monorepo Pattern:** Single repository with npm workspaces for code organization
 
 ---
-
+

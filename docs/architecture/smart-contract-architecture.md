@@ -65,4 +65,3 @@ event SymbolChanged(string oldSymbol, string newSymbol);
 - `changeSymbol(string memory newSymbol)` - Change token symbol (DEFAULT_ADMIN_ROLE)
 
 ---
-

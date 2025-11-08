@@ -29,7 +29,7 @@ Chain Equity is a tokenized security prototype that demonstrates on-chain equity
 - **Solidity** 0.8.x - Smart contract development
 - **Hardhat** ^2.x - Development framework, testing, and deployment
 - **OpenZeppelin** ^5.0.0 - ERC-20 base and AccessControl for RBAC
-- **ethers.js** ^6.x - Blockchain interaction (frontend and backend)
+- **ethers.js** ^6.x - Blockchain interaction (frontend)
 
 ### Frontend
 - **Vite.js** ^5.x - Build tool and development server
@@ -38,10 +38,8 @@ Chain Equity is a tokenized security prototype that demonstrates on-chain equity
 - **Tailwind CSS** ^4.x - Utility-first styling
 - **wagmi** ^2.x - Web3 React hooks for MetaMask integration
 
-### Backend & Authentication
+### Authentication
 - **Supabase Web3 Auth** ^2.x - User authentication and session management
-- **Node.js** - Backend runtime
-- **TypeScript** ^5.x - Type safety
 
 ### Development Tools
 - **npm** - Package manager with workspaces
@@ -68,14 +66,13 @@ cd chain-equity
 **One-Command Setup** (recommended):
 
 ```bash
-# Install all dependencies for all workspaces (root, contracts, backend, frontend)
+# Install all dependencies for all workspaces (root, contracts, frontend)
 npm install
 ```
 
 This single command installs dependencies for all workspaces in the monorepo:
 - Root workspace dependencies
 - Contracts workspace dependencies
-- Backend workspace dependencies
 - Frontend workspace dependencies
 
 **Manual Installation** (if needed):
@@ -86,11 +83,6 @@ npm install
 
 # Install frontend dependencies
 cd frontend
-npm install
-cd ..
-
-# Install backend dependencies
-cd backend
 npm install
 cd ..
 
@@ -115,7 +107,7 @@ Edit `.env` with your actual values:
 - **SUPABASE_URL**: Get from your Supabase project dashboard at https://app.supabase.com
 - **SUPABASE_ANON_KEY**: Get from your Supabase project dashboard
 - **RPC_URL**: For local development, use `http://localhost:8545` (Hardhat default)
-- **PRIVATE_KEY**: Your wallet private key for contract deployment (NEVER commit this)
+- **PRIVATE_KEY**: (Optional) Only needed for Sepolia testnet deployment. Not needed for local development or UI authentication. NEVER commit this.
 - **CONTRACT_ADDRESS**: Will be populated after contract deployment
 
 #### Frontend Environment Variables
@@ -148,12 +140,26 @@ npx hardhat node
 
 #### Terminal 2: Deploy Contracts
 
+**Option 1: Automatic deployment with .env updates (recommended)**
+
+```bash
+# From root directory
+npm run contracts:deploy
+
+# Or from contracts directory
+npm run deploy:local
+```
+
+This will deploy the contract and automatically update both `.env` and `frontend/.env.local` with the deployed contract address.
+
+**Option 2: Manual deployment**
+
 ```bash
 cd contracts
 npx hardhat run scripts/deploy.ts --network localhost
 ```
 
-Copy the deployed contract address and update it in both `.env` and `frontend/.env.local`.
+Then manually copy the deployed contract address and update it in both `.env` and `frontend/.env.local`.
 
 #### Terminal 3: Start Frontend
 
@@ -166,7 +172,7 @@ The frontend will be available at http://localhost:5173
 
 ## Project Structure
 
-This is a monorepo using npm workspaces for dependency management. The project is organized into three main workspaces:
+This is a monorepo using npm workspaces for dependency management. The project is organized into two main workspaces:
 
 ```
 chain-equity/
@@ -186,13 +192,6 @@ chain-equity/
 │   ├── dist/           # Production build output
 │   ├── vite.config.ts
 │   └── package.json
-├── backend/            # TypeScript backend services workspace
-│   ├── src/            # TypeScript source files
-│   │   ├── cap-table.ts
-│   │   ├── issuer.ts
-│   │   └── utils/
-│   ├── dist/           # Compiled JavaScript output
-│   └── package.json
 ├── docs/               # Documentation
 │   ├── architecture/  # Architecture documentation
 │   ├── prd/           # Product requirements
@@ -208,7 +207,6 @@ chain-equity/
 
 - **contracts/**: Hardhat project for smart contract development, testing, and deployment
 - **frontend/**: Vite + React application with TypeScript, Tailwind CSS, and Web3 integration
-- **backend/**: TypeScript backend services for cap-table management and issuer operations
 - **docs/**: Comprehensive project documentation including architecture, PRD, and development stories
 
 ### Key Directories
@@ -216,7 +214,6 @@ chain-equity/
 - **contracts/src/**: Solidity smart contract source files
 - **frontend/src/**: React application source code
 - **frontend/dist/**: Production build output (deployed to Firebase Hosting)
-- **backend/src/**: Backend service source code
 - **docs/architecture/**: System architecture and technical documentation
 
 ## Development Commands
@@ -251,28 +248,12 @@ npm run build
 npm run preview
 ```
 
-### Backend
-
-```bash
-cd backend
-
-# Build TypeScript
-npm run build
-
-# Run compiled JavaScript
-npm run start
-
-# Watch mode for development
-npm run dev
-```
-
 ## Environment Variables
 
 ### Security Notes
 
 - **NEVER commit `.env` or `.env.local` files** - they contain sensitive information
 - Always use `.env.example` files as templates
-- Keep your private keys secure and never share them
 - Use different keys for development and production environments
 
 ### Setting Up Supabase
