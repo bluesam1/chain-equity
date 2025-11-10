@@ -52,3 +52,4 @@ export function formatAmount(
   return num.toFixed(decimals).replace(/\.?0+$/, "");
 }
 
+
